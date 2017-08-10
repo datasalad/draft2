@@ -124,8 +124,59 @@ $(document).ready(function () {
 </div>
 
 
-<div id="r-markdown" class="section level2">
-<h2>R Markdown</h2>
+<div id="abstract" class="section level2">
+<h2>Abstract</h2>
+<p>Storms and other severe weather events can cause both public health and economic problems for communities and municipalities. Many severe events can result in fatalities, injuries, and property damage, and preventing such outcomes to the extent possible is a key concern.</p>
+<p>This project involves exploring the U.S. National Oceanic and Atmospheric Administration’s (NOAA) storm database. This database tracks characteristics of major storms and weather events in the United States, including when and where they occur, as well as estimates of any fatalities, injuries, and property damage.</p>
+<p>The basic goal of this assignment is to explore the NOAA Storm Database and answer some basic questions about severe weather events. You must use the database to answer the questions below and show the code for your entire analysis. Your analysis can consist of tables, figures, or other summaries. You may use any R package you want to support your analysis.</p>
+<p>Questions</p>
+<p>Your data analysis must address the following questions:</p>
+<ol style="list-style-type: decimal">
+<li>Across the United States, which types of events (as indicated in the 𝙴𝚅𝚃𝚈𝙿𝙴 variable) are most harmful with respect to population health?<br />
+</li>
+<li>Across the United States, which types of events have the greatest economic consequences?</li>
+</ol>
+<p>Consider writing your report as if it were to be read by a government or municipal manager who might be responsible for preparing for severe weather events and will need to prioritize resources for different types of events. However, there is no need to make any specific recommendations in your report.</p>
+</div>
+<div id="reading-the-data" class="section level2">
+<h2>Reading the data</h2>
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: 'dplyr'</code></pre>
+<pre><code>## The following objects are masked from 'package:stats':
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(ggplot2)
+
+## data &lt;- read.csv(&quot;data.bz2&quot;, header = TRUE, stringsAsFactors = FALSE)
+data &lt;- readRDS(&quot;dataraw.rds&quot;)
+
+d &lt;- tbl_df(data)
+
+
+by_event &lt;- group_by(d, EVTYPE)
+fatalities &lt;- summarise(by_event, sum(FATALITIES))
+injuries &lt;- summarise(by_event, sum(INJURIES))
+
+summary(fatalities)</code></pre>
+<pre><code>##     EVTYPE          sum(FATALITIES)  
+##  Length:985         Min.   :   0.00  
+##  Class :character   1st Qu.:   0.00  
+##  Mode  :character   Median :   0.00  
+##                     Mean   :  15.38  
+##                     3rd Qu.:   0.00  
+##                     Max.   :5633.00</code></pre>
+<pre class="r"><code>summary(injuries)</code></pre>
+<pre><code>##     EVTYPE          sum(INJURIES)    
+##  Length:985         Min.   :    0.0  
+##  Class :character   1st Qu.:    0.0  
+##  Mode  :character   Median :    0.0  
+##                     Mean   :  142.7  
+##                     3rd Qu.:    0.0  
+##                     Max.   :91346.0</code></pre>
 </div>
 
 
