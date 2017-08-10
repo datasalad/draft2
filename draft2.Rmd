@@ -1,0 +1,13 @@
+---
+title: "draft2"
+author: "Sergii Sorokolat"
+date: "10/08/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
