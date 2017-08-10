@@ -1,0 +1,21 @@
+"FATALITIES" "INJURIES"
+
+
+d <- tbl_df(data)
+by_event <- group_by(d, EVTYPE)
+fatalities <- summarise(by_event, sum(FATALITIES))
+injuries <- summarise(by_event, sum(INJURIES))
+
+summary(fatalities)
+summary(injuries)
+
+fatal <- filter(fatalities, `sum(FATALITIES)` > 15)
+inj <- filter(injuries, `sum(INJURIES)` > 142)
+
+ names(fatal) <- c("evt", "ppl")
+ names(inj) <- c("evt", "ppl")
+fatal$evt <- factor(fatal$evt, levels = fatal$evt[order(fatal$ppl, decreasing = T)])
+ggplot(fatal[1:25,], aes(x=evt, y=ppl)) + geom_bar(stat = "identity") + coord_flip()
+
+
+
