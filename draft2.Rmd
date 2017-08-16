@@ -1,11 +1,16 @@
 ---
-title: "Exploring the U.S. National Oceanic and Atmospheric Administration's (NOAA) storm database."
+title: Exploring the U.S. National Oceanic and Atmospheric Administration's (NOAA)
+  storm database.
+output:
+  pdf_document: default
+  html_document: default
+  keep_tex: yes
 date: "12/08/2017"
-output: html_document
+
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, keep_md = TRUE)
 ```
 
 ## Synopsis
@@ -34,7 +39,7 @@ The events in the database start in the year 1950 and end in November 2011. In t
 
 ## Questions
 
-1. Across the United States, which types of events (as indicated in the 𝙴𝚅𝚃𝚈𝙿𝙴 variable) are most harmful with respect to population health?   
+1. Across the United States, which types of events (as indicated in the **EVTYPE** variable) are most harmful with respect to population health?   
 
 2. Across the United States, which types of events have the greatest economic consequences?  
 
@@ -139,18 +144,18 @@ d <- mutate(d, prop_dmg = 0)
 d <- mutate(d, crop_dmg = 0) 
 
 ## convert to USD values using our helper function
-for (i in 1:nrow(d)) {
-    d$prop_dmg[i] <- convert_dmg(d$PROPDMG[i], d$PROPDMGEXP[i])
-    d$crop_dmg[i] <- convert_dmg(d$CROPDMG[i], d$CROPDMGEXP[i])
-}
-
-d <- mutate(d, total_ec_dmg = prop_dmg + crop_dmg) 
+# for (i in 1:nrow(d)) {
+#     d$prop_dmg[i] <- convert_dmg(d$PROPDMG[i], d$PROPDMGEXP[i])
+#     d$crop_dmg[i] <- convert_dmg(d$CROPDMG[i], d$CROPDMGEXP[i])
+# }
+# 
+# d <- mutate(d, total_ec_dmg = prop_dmg + crop_dmg) 
 ```
 
 Calculate the sum of property damage and crop damage (USD) for each type of event throughout 1950-2011 for each type of event.
 
 ```{r}
-ec <- summarise(group_by(d, EVTYPE), sum(total_ec_dmg))
+# ec <- summarise(group_by(d, EVTYPE), sum(total_ec_dmg))
 ```
 
 
@@ -166,21 +171,21 @@ summary(injuries)
 mean_inj <- mean(injuries$`sum(INJURIES)`)
 print(mean_inj)
 
-summary(ec)
-mean_ec <- mean(ec$`sum(total_ec_dmg)`)
-print(mean_ec)
+# summary(ec)
+# mean_ec <- mean(ec$`sum(total_ec_dmg)`)
+# print(mean_ec)
 
 fatal <- filter(fatalities, `sum(FATALITIES)` > mean_fatal)
 inj <- filter(injuries, `sum(INJURIES)` > mean_inj)
-e <- filter(ec, `sum(total_ec_dmg)` > mean_ec)
+
 
 names(fatal) <- c("evt", "ppl")
 names(inj) <- c("evt", "ppl")
-names(e) <- c("evt", "usd")
+# names(e) <- c("evt", "usd")
 
 fatal$evt <- factor(fatal$evt, levels = fatal$evt[order(fatal$ppl, decreasing = T)])
 inj$evt <- factor(inj$evt, levels = inj$evt[order(inj$ppl, decreasing = T)])
-e$evt <- factor(e$evt, levels = e$evt[order(e$usd, decreasing = T)])
+# e$evt <- factor(e$evt, levels = e$evt[order(e$usd, decreasing = T)])
 ```
 
 We'll use the above mean values during the data visualization.
@@ -222,9 +227,9 @@ Most **injuries** caused by severe weather events are:
   **Across the United States, which types of events have the greatest economic consequences?**
 
 ```{r fig.width=9}
-ggplot(e[1:25,], aes(x=evt, y=usd)) + geom_bar(stat = "identity") + coord_flip() +
-    xlab("Event") + ylab("USD") +
-    ggtitle("Economic consequences caused by severe weather events in the US 1950-2011")
+# ggplot(e[1:25,], aes(x=evt, y=usd)) + geom_bar(stat = "identity") + coord_flip() +
+#     xlab("Event") + ylab("USD") +
+#     ggtitle("Economic consequences caused by severe weather events in the US 1950-2011")
 
 ```
 
